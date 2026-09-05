@@ -158,11 +158,11 @@ export default function CartPage() {
               </span>
             </div>
 
-            <button
-              className="mt-6 w-full bg-gray-900 px-6 py-4 text-sm font-semibold text-white transition hover:bg-gray-700"
+            <Link href="/checkout"
+                  className="mt-6 block w-full bg-gray-900 px-6 py-4 text-center text-sm font-semibold text-white transition hover:bg-gray-700"
             >
               Checkout
-            </button>
+            </Link>
 
             <Link
               href="/products"

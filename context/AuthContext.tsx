@@ -17,7 +17,7 @@ interface User {
 interface AuthContextType {
     user: User | null;
     isAuthenticated: boolean;
-    login: (email: string, password: string) => void;
+    login: (email: string, password: string) => User;
     logout: () => void;
 }
 
@@ -36,12 +36,16 @@ export function AuthProvider({
 
         console.log("Login: ", email, password);
 
-        setUser({
+        const loggedInUser: User = {
             id: 1,
-            name: "Demo User",
+            name: "Duy",
             email,
-            role: "CUSTOMER",
-        });
+            role: "ADMIN"
+        };
+
+        setUser(loggedInUser)
+
+        return loggedInUser;
     };
 
     const logout = () => {

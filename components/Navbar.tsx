@@ -50,6 +50,13 @@ export default function Navbar() {
                                 Hi, {user?.name}
                             </span>
 
+                            {user?.role === "ADMIN" && (
+                                <Link href="/admin"
+                                className="text-sm font-medium text-gray-900 hover:text-gray-500">
+                                    Admin Dashboard
+                                </Link>
+                            )} 
+
                             <button
                                 onClick={logout}
                                 className="text-sm font-medium text-gray-900 hover:text-gray-500"

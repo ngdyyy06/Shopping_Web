@@ -24,9 +24,13 @@ export default function LoginPage() {
             return;
         }
 
-        login(email, password);
+        const loggedInUser = login(email, password);
 
-        router.push("/");
+        if (loggedInUser.role === "ADMIN") {
+            router.push("/admin");
+        } else {
+            router.push("/")
+        }
     };
 
     return (
