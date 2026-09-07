@@ -1,0 +1,138 @@
+// Prisma schema for Shopping Web
+// đây là thiết kế database của prisma
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+// =========================
+// ENUMS
+// =========================
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  VNPAY
+  MOMO
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELLED
+}
+
+
+// =========================
+// USER
+// =========================
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      UserRole @default(CUSTOMER)
+  createdAt DateTime @default(now())
+
+  orders Order[]
+}
+
+
+// =========================
+// PRODUCT
+// =========================
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(12, 2)
+  category    String
+  subcategory String
+  image       String
+  rating      Decimal  @db.Decimal(2, 1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orderItems OrderItem[]
+
+  @@index([category])
+  @@index([subcategory])
+}
+
+
+// =========================
+// ORDER
+// =========================
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  userId          Int
+  totalAmount     Decimal     @db.Decimal(12, 2)
+  status          OrderStatus @default(PENDING)
+  shippingAddress String
+  createdAt       DateTime    @default(now())
+
+  user     User        @relation(fields: [userId], references: [id])
+  items    OrderItem[]
+  payment  Payment?
+
+  @@index([userId])
+}
+
+
+// =========================
+// ORDER ITEM
+// =========================
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  productName String
+  price     Decimal @db.Decimal(12, 2)
+  quantity  Int
+  subtotal  Decimal @db.Decimal(12, 2)
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+
+// =========================
+// PAYMENT
+// =========================
+
+model Payment {
+  id            Int            @id @default(autoincrement())
+  orderId       Int            @unique
+  method        PaymentMethod
+  status        PaymentStatus  @default(PENDING)
+  amount        Decimal        @db.Decimal(12, 2)
+  transactionId String?
+  createdAt     DateTime       @default(now())
+  paidAt        DateTime?
+
+  order Order @relation(fields: [orderId], references: [id])
+}

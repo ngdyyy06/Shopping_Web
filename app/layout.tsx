@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "The North Face",
-  description: "Online Shopping Website",
+  description: "The North Face outdoor clothing and gear",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

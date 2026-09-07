@@ -15,9 +15,13 @@ export default function Navbar() {
 
                 <Link
                     href="/"
-                    className="text-2xl font-bold text-gray-900"
+                    className="flex items-center"
                 >
-                    Shopping Web
+                    <img
+                        src="/images/logo/logo.jpg"
+                        alt="The North Face"
+                        className="h-12 w-auto"
+                    />
                 </Link>
 
                 <div className="flex items-center gap-8">

@@ -1,9 +1,15 @@
 import CategoryCard from "@/components/CategoryCard";
 import ProductCard from "@/components/ProductCard";
-import { products } from "@/data/products";
+import { prisma } from "@/lib/prisma";
 
+export default async function Home() {
+  const products = await prisma.product.findMany({
+    orderBy: {
+      id: "asc",
+    },
+    take: 8,
+  });
 
-export default function Home() {
   return (
     <main>
       <section className="bg-gray-100">
@@ -33,10 +39,12 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="flex h-[350px] items-center justify-center bg-gray-300 md:h-[450px]">
-            <span className="text-lg font-medium text-gray-600">
-              Product Image
-            </span>
+          <div className="h-[350px] overflow-hidden bg-gray-300 md:h-[450px]">
+            <img
+              src="/images/products/cover.jpg"
+              alt="The North Face Men's GORE-TEX Mountain Jacket"
+              className="h-full w-full object-cover"
+            />
           </div>
 
         </div>
@@ -62,23 +70,27 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
 
             <CategoryCard
-              name="Fashion"
-              description="Clothing and accessories"
+                name="MEN"
+                description="Men's outdoor clothing and footwear"
+                image="/images/categories/men.jpg"
             />
 
             <CategoryCard
-              name="Shoes"
-              description="Find your perfect pair"
+                name="WOMEN"
+                description="Women's outdoor clothing and footwear"
+                image="/images/categories/women.jpg"
             />
 
             <CategoryCard
-              name="Beauty"
-              description="Beauty and personal care"
+                name="KIDS"
+                description="Outdoor clothing for kids"
+                image="/images/categories/kids.jpg"
             />
 
             <CategoryCard
-              name="Technology"
-              description="Latest tech products"
+                name="GEAR"
+                description="Backpacks and outdoor gear"
+                image="/images/categories/gear.jpg"
             />
 
           </div>
@@ -110,13 +122,13 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => (
               <ProductCard
-                key={product.name}
+                key={product.id}
                 id={product.id}
                 name={product.name}
-                price={product.price}
+                price={Number(product.price)}
                 image={product.image}
                 category={product.category}
-               rating={product.rating}
+                rating={Number(product.rating)}
               />
             ))}
           </div>

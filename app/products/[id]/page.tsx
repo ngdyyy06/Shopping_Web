@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { products } from "@/data/products";
+import { Product } from "@/types/product";
 import AddToCartButton from "@/components/AddToCartButton";
 
 interface ProductDetailPageProps {
@@ -9,10 +9,25 @@ interface ProductDetailPageProps {
 }
 
 export default async function ProductDetailPage({
-  params,  // Next.js cung cấp thông tin URL động
+  params, // Next.js cung cấp thông tin URL động
 }: ProductDetailPageProps) {
   const { id } = await params;
 
+  // Lấy danh sách sản phẩm từ API
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"}/api/products`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch products");
+  }
+
+  const products: Product[] = await response.json();
+
+  // Tìm sản phẩm có id trùng với id trên URL
   const product = products.find(
     (product) => product.id === Number(id)
   );

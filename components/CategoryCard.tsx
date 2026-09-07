@@ -1,26 +1,39 @@
 interface CategoryCardProps {
     name: string;
     description: string;
-  }
-  
-  export default function CategoryCard({
+    image: string;
+}
+
+export default function CategoryCard({
     name,
     description,
-  }: CategoryCardProps) {
+    image,
+}: CategoryCardProps) {
     return (
-      <a
-        href={`/products?category=${name.toLowerCase()}`}
-        className="group block bg-gray-100 p-8 transition hover:bg-gray-900"
-      >
-        <div className="flex h-48 flex-col justify-end">
-          <h3 className="text-2xl font-bold text-gray-900 transition group-hover:text-white">
-            {name}
-          </h3>
-  
-          <p className="mt-2 text-sm text-gray-600 transition group-hover:text-gray-300">
-            {description}
-          </p>
-        </div>
-      </a>
+        <a
+            href={`/products?category=${name.toLowerCase()}`}
+            className="group relative block h-64 overflow-hidden"
+        >
+            {/* Category Image */}
+            <img
+                src={image}
+                alt={name}
+                className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
+            />
+
+            {/* Dark overlay */}
+            <div className="absolute inset-0 bg-black/20 transition group-hover:bg-black/50" />
+
+            {/* Content */}
+            <div className="relative flex h-full flex-col justify-end p-8">
+                <h3 className="text-2xl font-bold text-white">
+                    {name}
+                </h3>
+
+                <p className="mt-2 text-sm text-gray-200">
+                    {description}
+                </p>
+            </div>
+        </a>
     );
-  }
+}
