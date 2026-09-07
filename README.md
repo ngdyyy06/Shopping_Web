@@ -503,7 +503,7 @@ The project is inspired by the design and concept of The North Face and is not a
 
 ## Author
 
-**ngdyyy**
+**Nguyen Quang Duy**
 
 GitHub:
 
